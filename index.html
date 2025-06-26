@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+/* Scroll animations */<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -912,7 +912,195 @@
             }
         }
 
-        /* Scroll animations */
+        /* Modal/Dialog Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.7) translateY(50px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: row;
+            min-height: 400px;
+        }
+
+        .modal-image {
+            width: 300px;
+            min-width: 300px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 0 0 0 20px;
+        }
+
+        .modal-image-placeholder {
+            width: 300px;
+            min-width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0 0 0 20px;
+            opacity: 0.3;
+        }
+
+        .modal-details {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .modal-beer-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .modal-beer-style {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-beer-description {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .modal-beer-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-stat {
+            text-align: center;
+        }
+
+        .modal-stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .modal-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Mobile modal adjustments */
+        @media (max-width: 768px) {
+            .modal-content {
+                max-width: 95vw;
+                max-height: 95vh;
+            }
+
+            .modal-body {
+                flex-direction: column;
+            }
+
+            .modal-image,
+            .modal-image-placeholder {
+                width: 100%;
+                height: 250px;
+                border-radius: 0;
+            }
+
+            .modal-details {
+                padding: 20px;
+            }
+
+            .modal-beer-name {
+                font-size: 2rem;
+            }
+
+            .modal-beer-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .modal-stat {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .modal-stat-value {
+                font-size: 1.5rem;
+            }
+        }
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -1077,20 +1265,16 @@
             <div class="contact-info fade-in">
                 <h2>Mission Control</h2>
                 <div class="contact-item">
-                    <strong>Address:</strong>
-                    <span>2847 Constellation Drive<br>Brewtown, ST 12345</span>
-                </div>
-                <div class="contact-item">
-                    <strong>Phone:</strong>
-                    <span>(555) ASTRO-BREW</span>
+                    <strong>Location:</strong>
+                    <span>Cedar Falls, IA</span>
                 </div>
                 <div class="contact-item">
                     <strong>Email:</strong>
-                    <span>hello@astrobrewing.com</span>
+                    <span>astro@astrobrewing.com</span>
                 </div>
                 <div class="contact-item">
                     <strong>Hours:</strong>
-                    <span>Mon-Thu: 4PM-10PM<br>Fri-Sat: 2PM-12AM<br>Sun: 2PM-9PM</span>
+                    <span>Coming Soon!</span>
                 </div>
             </div>
             <div class="contact-form fade-in">
@@ -1119,13 +1303,42 @@
 
     <footer>
         <div class="social-links">
-            <a href="#">📘</a>
-            <a href="#">📷</a>
-            <a href="#">🐦</a>
-            <a href="#">📍</a>
+            <a href="https://www.instagram.com/astro_brewing/">📷</a>
         </div>
         <p>&copy; 2025 Astro Brewing Company. All rights reserved. | Crafted with ❤️ and hops</p>
     </footer>
+
+    <!-- Beer Details Modal -->
+    <div class="modal-overlay" id="beerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Beer Details</h3>
+                <button class="modal-close" onclick="closeBeerModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalImage" class="modal-image-placeholder">🍺</div>
+                <div class="modal-details">
+                    <div id="modalBeerName" class="modal-beer-name"></div>
+                    <div id="modalBeerStyle" class="modal-beer-style"></div>
+                    <div id="modalBeerDescription" class="modal-beer-description"></div>
+                    <div class="modal-beer-stats">
+                        <div class="modal-stat">
+                            <div id="modalAbv" class="modal-stat-value"></div>
+                            <div class="modal-stat-label">ABV</div>
+                        </div>
+                        <div class="modal-stat">
+                            <div id="modalIbu" class="modal-stat-value"></div>
+                            <div class="modal-stat-label">IBU</div>
+                        </div>
+                        <div class="modal-stat">
+                            <div id="modalOg" class="modal-stat-value"></div>
+                            <div class="modal-stat-label">OG</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Smooth scrolling for navigation links
@@ -1347,7 +1560,7 @@
                 '';
             
             return `
-                <div class="beer-card fade-in" data-recipe-id="${recipe._id}">
+                <div class="beer-card fade-in" data-recipe-id="${recipe._id}" onclick="openBeerModal('${recipe._id}', '${recipe.name.replace(/'/g, "\\'")}', '${recipe.style?.name || 'Custom Style'}', \`${(teaserText || '').replace(/`/g, '\\`').replace(/'/g, "\\'")}\`, '${abv}', '${ibu}', '${og}', '${imageUrl || ''}')">
                     ${imageUrl ? `<div class="beer-image" style="background-image: url('${imageUrl}')"></div>` : '<div class="beer-image-placeholder">🍺</div>'}
                     <div class="beer-content">
                         <div class="beer-header">
@@ -1569,6 +1782,53 @@
                 }, 2000);
             }
         }
+
+        // Modal functions
+        function openBeerModal(recipeId, name, style, description, abv, ibu, og, imageUrl) {
+            // Populate modal content
+            document.getElementById('modalTitle').textContent = name;
+            document.getElementById('modalBeerName').textContent = name;
+            document.getElementById('modalBeerStyle').textContent = style;
+            document.getElementById('modalBeerDescription').textContent = description || 'No description available.';
+            document.getElementById('modalAbv').textContent = abv + '%';
+            document.getElementById('modalIbu').textContent = ibu;
+            document.getElementById('modalOg').textContent = og;
+            
+            // Handle image
+            const modalImageElement = document.getElementById('modalImage');
+            if (imageUrl && imageUrl !== '') {
+                modalImageElement.className = 'modal-image';
+                modalImageElement.style.backgroundImage = `url('${imageUrl}')`;
+                modalImageElement.textContent = '';
+            } else {
+                modalImageElement.className = 'modal-image-placeholder';
+                modalImageElement.style.backgroundImage = '';
+                modalImageElement.textContent = '🍺';
+            }
+            
+            // Show modal
+            document.getElementById('beerModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeBeerModal() {
+            document.getElementById('beerModal').classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Close modal when clicking outside of it
+        document.getElementById('beerModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBeerModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeBeerModal();
+            }
+        });
 
         // Load Brewfather recipes when page loads
         document.addEventListener('DOMContentLoaded', function() {
