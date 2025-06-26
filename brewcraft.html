@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brewcraft - Astro Brewing Company</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #49BE3F;
+            --secondary: #1a1a1a;
+            --accent: #8E5ED6;
+            --text-light: #ffffff;
+            --text-dark: #000000;
+            --text-disabled: #D2DAE5;
+            --text-reversed: #E9EDF1;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2c1810 100%);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* Navigation - Vertical Sidebar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            z-index: 1000;
+            padding: 40px 0;
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.95);
+            border-right: 1px solid var(--glass);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 30px;
+            height: 100%;
+        }
+
+        .logo {
+            width: 100%;
+            height: auto;
+            max-height: 180px;
+            margin-bottom: 60px;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .nav-links li {
+            width: 100%;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: block;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            background: rgba(73, 190, 63, 0.1);
+            transform: translateX(5px);
+            box-shadow: 
+                0 0 15px rgba(73, 190, 63, 0.6),
+                0 0 25px rgba(73, 190, 63, 0.4),
+                0 0 35px rgba(73, 190, 63, 0.2);
+            animation: button-glow-pulse 2s ease-in-out infinite alternate;
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+            background: rgba(73, 190, 63, 0.1);
+            transform: translateX(5px);
+        }
+
+        @keyframes button-glow-pulse {
+            0% {
+                box-shadow: 
+                    0 0 15px rgba(73, 190, 63, 0.6),
+                    0 0 25px rgba(73, 190, 63, 0.4),
+                    0 0 35px rgba(73, 190, 63, 0.2);
+            }
+            100% {
+                box-shadow: 
+                    0 0 20px rgba(73, 190, 63, 0.8),
+                    0 0 30px rgba(73, 190, 63, 0.6),
+                    0 0 40px rgba(73, 190, 63, 0.4),
+                    0 0 50px rgba(73, 190, 63, 0.2);
+            }
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 10px;
+            left: 20px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: calc(100% - 40px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 80px 40px 40px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .page-title {
+            font-size: clamp(3rem, 6vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--text-light), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: capitalize;
+        }
+
+        .page-subtitle {
+            font-size: 24px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .page-description {
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Project Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .project-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(73, 190, 63, 0.2);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .project-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-content {
+            padding: 30px;
+        }
+
+        .project-name {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .project-type {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .project-description {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .project-features {
+            margin-bottom: 25px;
+        }
+
+        .project-features h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .project-features ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .project-features li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .project-features li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .project-status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-active {
+            background: rgba(73, 190, 63, 0.2);
+            color: var(--primary);
+            border: 1px solid rgba(73, 190, 63, 0.3);
+        }
+
+        .status-development {
+            background: rgba(142, 94, 214, 0.2);
+            color: var(--accent);
+            border: 1px solid rgba(142, 94, 214, 0.3);
+        }
+
+        .status-prototype {
+            background: rgba(255, 193, 7, 0.2);
+            color: #FFD60A;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                padding: 15px 20px;
+                border-right: none;
+                border-bottom: 1px solid var(--glass);
+            }
+
+            .nav-container {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                height: auto;
+                padding: 0;
+            }
+
+            .logo {
+                height: 40px;
+                margin-bottom: 0;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .page-subtitle {
+                font-size: 18px;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <img src="images/astro-logo.svg" alt="Astro Brewing Company" class="logo">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#beers">Beers</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="brewcraft.html" class="active">Brewcraft</a></li>
+                <li><a href="meet-the-brewery.html">Meet the Brewery</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header fade-in">
+            <div class="page-subtitle">IoT Innovation Lab</div>
+            <h1 class="page-title">Brewcraft Projects</h1>
+            <p class="page-description">
+                Where brewing meets cutting-edge technology. Explore our custom IoT controllers and smart brewing devices 
+                that push the boundaries of traditional brewing through automation, machine learning, and precision control.
+            </p>
+        </div>
+
+        <div class="projects-grid">
+            <div class="project-card fade-in">
+                <div class="project-image" style="background-image: url('images/hlthud.png'); background-size: cover; background-position: center;">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-name">HLT HUD</h3>
+                    <div class="project-type">Hot Liquor Tank Smart Controller</div>
+                    <p class="project-description">
+                        An intelligent hot liquor tank controller that automates temperature management and water heating 
+                        for optimal brewing conditions. Features real-time monitoring, precise temperature control, and 
+                        integration with brewing schedules.
+                    </p>
+                    <div class="project-features">
+                        <h4>Key Features:</h4>
+                        <ul>
+                            <li>Precision temperature control (±0.5°F)</li>
+                            <li>Remote monitoring via mobile app</li>
+                            <li>Automated heating schedules</li>
+                            <li>Energy efficiency optimization</li>
+                            <li>Safety shutoff protocols</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                        <span class="project-status status-active">Active</span>
+                        <button disabled style="
+                            display: inline-block;
+                            padding: 10px 20px;
+                            background: rgba(255, 255, 255, 0.1);
+                            color: rgba(255, 255, 255, 0.5);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 20px;
+                            font-size: 12px;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                            cursor: not-allowed;
+                            opacity: 0.6;
+                        ">
+                            Case Study Coming Soon
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image" style="background-image: url('images/singletap.png'); background-size: cover; background-position: center;">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-name">SingleTap</h3>
+                    <div class="project-type">Universal Touchscreen Interface</div>
+                    <p class="project-description">
+                        One interface to rule them all. A touchscreen control system that manages keezer temperature 
+                        using machine learning algorithms that analyze local weather, room temperature, and dual keezer 
+                        probes for optimal cooling efficiency and serving temperatures.
+                    </p>
+                    <div class="project-features">
+                        <h4>Key Features:</h4>
+                        <ul>
+                            <li>Machine learning temperature optimization</li>
+                            <li>Weather-aware cooling adjustments</li>
+                            <li>Dual temperature probe monitoring</li>
+                            <li>Intuitive touchscreen interface</li>
+                            <li>Energy usage analytics</li>
+                            <li>Multiple beer serving temp profiles</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                        <span class="project-status status-development">In Development</span>
+                        <a href="singletap_case_study.html" style="
+                            display: inline-block;
+                            padding: 10px 20px;
+                            background: linear-gradient(135deg, var(--primary), var(--accent));
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 20px;
+                            font-size: 12px;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(73, 190, 63, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                            View Case Study →
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-image">
+                    🌿🔥
+                </div>
+                <div class="project-content">
+                    <h3 class="project-name">Hopothermia</h3>
+                    <div class="project-type">Hop Extract Warming Device</div>
+                    <p class="project-description">
+                        Revolutionary hop dropping system that enables precise hop extract addition during fermentation 
+                        without ever opening the fermenter. Maintains sterile conditions while delivering perfectly 
+                        warmed hop extracts at optimal temperatures.
+                    </p>
+                    <div class="project-features">
+                        <h4>Key Features:</h4>
+                        <ul>
+                            <li>Closed-system hop extract delivery</li>
+                            <li>Precise temperature control for extracts</li>
+                            <li>Maintains fermentation sterility</li>
+                            <li>Programmable addition schedules</li>
+                            <li>Compatible with various extract types</li>
+                            <li>Contamination prevention protocols</li>
+                        </ul>
+                    </div>
+                    <span class="project-status status-development">In Development</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-header fade-in">
+            <p class="page-description">
+                Each project represents our commitment to innovation in brewing technology. By combining traditional 
+                brewing knowledge with modern IoT capabilities, we're creating tools that enhance precision, 
+                consistency, and efficiency in craft brewing operations.
+            </p>
+        </div>
+    </main>
+
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

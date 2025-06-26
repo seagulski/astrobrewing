@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet the Brewery - Astro Brewing Company</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #49BE3F;
+            --secondary: #1a1a1a;
+            --accent: #8E5ED6;
+            --text-light: #ffffff;
+            --text-dark: #000000;
+            --text-disabled: #D2DAE5;
+            --text-reversed: #E9EDF1;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2c1810 100%);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* Navigation - Vertical Sidebar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            z-index: 1000;
+            padding: 40px 0;
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.95);
+            border-right: 1px solid var(--glass);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 30px;
+            height: 100%;
+        }
+
+        .logo {
+            width: 100%;
+            height: auto;
+            max-height: 180px;
+            margin-bottom: 60px;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .nav-links li {
+            width: 100%;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: block;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            background: rgba(73, 190, 63, 0.1);
+            transform: translateX(5px);
+            box-shadow: 
+                0 0 15px rgba(73, 190, 63, 0.6),
+                0 0 25px rgba(73, 190, 63, 0.4),
+                0 0 35px rgba(73, 190, 63, 0.2);
+            animation: button-glow-pulse 2s ease-in-out infinite alternate;
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+            background: rgba(73, 190, 63, 0.1);
+            transform: translateX(5px);
+        }
+
+        @keyframes button-glow-pulse {
+            0% {
+                box-shadow: 
+                    0 0 15px rgba(73, 190, 63, 0.6),
+                    0 0 25px rgba(73, 190, 63, 0.4),
+                    0 0 35px rgba(73, 190, 63, 0.2);
+            }
+            100% {
+                box-shadow: 
+                    0 0 20px rgba(73, 190, 63, 0.8),
+                    0 0 30px rgba(73, 190, 63, 0.6),
+                    0 0 40px rgba(73, 190, 63, 0.4),
+                    0 0 50px rgba(73, 190, 63, 0.2);
+            }
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 10px;
+            left: 20px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: calc(100% - 40px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 80px 40px 40px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .page-title {
+            font-size: clamp(3rem, 6vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--text-light), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: capitalize;
+        }
+
+        .page-subtitle {
+            font-size: 24px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .page-description {
+            font-size: 18px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .tab-button {
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tab-button:hover,
+        .tab-button.active {
+            background: rgba(73, 190, 63, 0.2);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Equipment Grid */
+        .equipment-section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section-description {
+            text-align: center;
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .equipment-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .equipment-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(73, 190, 63, 0.2);
+        }
+
+        .equipment-image {
+            width: 100%;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .equipment-content {
+            padding: 25px;
+        }
+
+        .equipment-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .equipment-brand {
+            font-size: 14px;
+            color: var(--accent);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .equipment-description {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .equipment-specs {
+            margin-bottom: 20px;
+        }
+
+        .equipment-specs h5 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .specs-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .specs-list li {
+            padding: 3px 0;
+            font-size: 13px;
+            opacity: 0.8;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .specs-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .affiliate-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .affiliate-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(73, 190, 63, 0.3);
+        }
+
+        /* Category Sections */
+        .category-section {
+            display: none;
+        }
+
+        .category-section.active {
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                padding: 15px 20px;
+                border-right: none;
+                border-bottom: 1px solid var(--glass);
+            }
+
+            .nav-container {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                height: auto;
+                padding: 0;
+            }
+
+            .logo {
+                height: 40px;
+                margin-bottom: 0;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .category-tabs {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .equipment-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <img src="images/astro-logo.svg" alt="Astro Brewing Company" class="logo">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#beers">Beers</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="brewcraft.html">Brewcraft</a></li>
+                <li><a href="meet-the-brewery.html" class="active">Meet the Brewery</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header fade-in">
+            <div class="page-subtitle">Equipment Arsenal</div>
+            <h1 class="page-title">Meet the Brewery</h1>
+            <p class="page-description">
+                Discover the cutting-edge equipment that powers our cosmic brewing operation. From grain to glass, 
+                every piece of hardware is carefully selected to deliver stellar results and out-of-this-world flavors.
+            </p>
+        </div>
+
+        <div class="category-tabs fade-in">
+            <button class="tab-button active" onclick="showCategory('hot-side')">Hot Side</button>
+            <button class="tab-button" onclick="showCategory('cold-side')">Cold Side</button>
+            <button class="tab-button" onclick="showCategory('misc')">Miscellaneous</button>
+        </div>
+
+        <!-- Hot Side Equipment -->
+        <div id="hot-side" class="category-section active fade-in">
+            <div class="equipment-section">
+                <h2 class="section-title">🔥 Hot Side Equipment</h2>
+                <p class="section-description">
+                    The foundation of great beer starts here. Our hot side equipment handles mashing, lautering, 
+                    boiling, and everything that happens before fermentation begins.
+                </p>
+                
+                <div class="equipment-grid">
+                    <div class="equipment-card">
+                        <div class="equipment-image">🍯</div>
+                        <div class="equipment-content">
+                            <h3 class="equipment-name">All-in-One Brewing System</h3>
+                            <div class="equipment-brand">Grainfather / Anvil</div>
+                            <p class="equipment-description">
+                                Electric all-grain brewing system with precise temperature control, built-in pump, 
+                                and automated mashing capabilities for consistent results.
+                            </p>
+                            <div class="equipment-specs">
+                                <h5>Specifications:</h5>
+                                <ul class="specs-list">
+                                    <li>Capacity: 5-6 gallons</li>
+                                    <li>Power: 1600W heating element</li>
+                                    <li>Digital temperature control</li>
+                                    <li>Integrated recirculation pump</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="affiliate-link">View Product</a>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-image">🌡️</div>
+                        <div class="equipment-content">
+                            <h3 class="equipment-name">Hot Liquor Tank</h3>
+                            <div class="equipment-brand">Custom Build</div>
+                            <p class="equipment-description">
+                                Stainless steel HLT with our custom HLT HUD controller for automated water heating 
+                                and temperature maintenance during brew days.
+                            </p>
+                            <div class="equipment-specs">
+                                <h5>Specifications:</h5>
+                                <ul class="specs-list">
+                                    <li>Capacity: 15 gallons</li>
+                                    <li>Material: 304 stainless steel</li>
+                                    <li>Smart temperature control</li>
+                                    <li>IoT connectivity</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="affiliate-link">Learn More</a>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-image">⚡</div>
+                        <div class="equipment-content">
+                            <h3 class="equipment-name">Immersion Chiller</h3>
+                            <div class="equipment-brand">JaDeD Brewing</div>
+                            <p class="equipment-description">
+                                High-efficiency copper immersion chiller for rapid wort cooling, essential for 
+                                hop flavor preservation and quick turnaround times.
+                            </p>
+                            <div class="equipment-specs">
+                                <h5>Specifications:</h5>
+                                <ul class="specs-list">
+                                    <li>Material: 1/2" copper tubing</li>
+                                    <li>Cooling capacity: 5-10 gallons</li>
+                                    <li>Quick-disconnect fittings</li>
+                                    <li>Compact storage design</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="affiliate-link">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cold Side Equipment -->
+        <div id="cold-side" class="category-section fade-in">
+            <div class="equipment-section">
+                <h2 class="section-title">❄️ Cold Side Equipment</h2>
+                <p class="section-description">
+                    Where the magic happens. Our cold side setup handles fermentation, conditioning, 
+                    and serving with precision temperature control and contamination prevention.
+                </p>
+                
+                <div class="equipment-grid">
+                    <div class="equipment-card">
+                        <div class="equipment-image">🧪</div>
+                        <div class="equipment-content">
+                            <h3 class="equipment-name">Conical Fermenters</h3>
+                            <div class="equipment-brand">Spike Brewing</div>
+                            <p class="equipment-description">
+                                Stainless steel conical fermenters with sample ports, dump valves, and 
+                                temperature control capabilities for professional-grade fermentation.
+                            </p>
+                            <div class="equipment-specs">
+                                <h5>Specifications:</h5>
+                                <ul class="specs-list">
+                                    <li>Capacity: 7 gallons</li>
+                                    <li>304 stainless steel construction</li>
+                                    <li>Tri-clamp fittings</li>
+                                    <li>Butterfly dump valve</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="affiliate-link">View Product</a>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-image">🏠</div>
+                        <div class="equipment-content">
+                            <h3 class="equipment-name">Fermentation Chamber</h3>
+                            <div class="equipment-brand">Custom Build</div>
+                            <p class="equipment-description">
+                                Temperature-controlled fermentation environment with our SingleTap system 
+                                for precise climate control and monitoring.
+                            </p>
+                            <div class="equipment-specs">
+                                <h5>Specifications:</h5>
+                                <ul class="specs-list">
+                                    <li>Capacity: 4 fermenters</li>
+                                    <li>Temperature range: 32-90°F</li>
+                                    <li>Humidity control</li>
+                                    <li>Smart monitoring system</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="affiliate-link">Learn More</a>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-image">🍺</div>
+                        <div class="equipment-content">
+                            <h3 class="equipment-name">Keezer System</h3>
+                            <div class="equipment-brand">Custom Build</div>
+                            <p class="equipment-description">
+                                Modified chest freezer keezer with 4 taps, CO2 system, and our SingleTap 
+                                temperature control for perfect serving conditions.
+                            </p>
+                            <div class="equipment-specs">
+                                <h5>Specifications:</h5>
+                                <ul class="specs-list">
+                                    <li>Capacity: 4 x 5-gallon kegs</li>
+                                    <li>Dual-zone temperature control</li>
+                                    <li>Nitrogen/CO2 gas blending</li>
+                                    <li>Machine learning optimization</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="affiliate-link">Shop Parts</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Miscellaneous Equipment -->
+        <div id="misc" class="category-section fade-in">
+            <div class="equipment-section">
+                <h2 class="section-title">🔧 Miscellaneous Equipment</h2>
+                <p class="section-description">
+                    The supporting cast that makes everything possible. From testing to cleaning, 
+                    these tools ensure quality and consistency in every batch.
+                </p>
+                
+                <div class="equipment-grid">
+                    <div class="equipment-card">
+                        <div class="equipment-image">📊</div>
+                        <div class="equipment-content">
+                            <h3 class="equipment-name">Digital Refractometer</h3>
+                            <div class="equipment-brand">ATAGO</div>
+                            <p class="equipment-description">
+                                Precision refractometer for accurate gravity readings with temperature 
+                                compensation and Brix/SG conversion capabilities.
+                            </p>
+                            <div class="equipment-specs">
+                                <h5>Specifications:</h5>
+                                <ul class="specs-list">
+                                    <li>Range: 0-32 Brix</li>
+                                    <li>Accuracy: ±0.1 Brix</li>
+                                    <li>Auto temperature compensation</li>
+                                    <li>Digital display</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="affiliate-link">Buy Now</a>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-image">⚗️</div>
+                        <div class="equipment-content">
+                            <h3 class="equipment-name">pH Meter</h3>
+                            <div class="equipment-brand">Hanna Instruments</div>
+                            <p class="equipment-description">
+                                Professional-grade pH meter for water chemistry adjustment and 
+                                mash pH optimization during the brewing process.
+                            </p>
+                            <div class="equipment-specs">
+                                <h5>Specifications:</h5>
+                                <ul class="specs-list">
+                                    <li>Range: 0.00-14.00 pH</li>
+                                    <li>Accuracy: ±0.01 pH</li>
+                                    <li>Waterproof design</li>
+                                    <li>Automatic calibration</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="affiliate-link">Shop Now</a>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-image">🧽</div>
+                        <div class="equipment-content">
+                            <h3 class="equipment-name">CIP System</h3>
+                            <div class="equipment-brand">Custom Build</div>
+                            <p class="equipment-description">
+                                Clean-in-place system for automated cleaning and sanitization of 
+                                fermentation vessels and transfer lines.
+                            </p>
+                            <div class="equipment-specs">
+                                <h5>Specifications:</h5>
+                                <ul class="specs-list">
+                                    <li>Automated cleaning cycles</li>
+                                    <li>Chemical dosing control</li>
+                                    <li>Temperature monitoring</li>
+                                    <li>Multi-vessel compatibility</li>
+                                </ul>
+                            </div>
+                            <a href="#" class="affiliate-link">Learn More</a>
+                        </div>
+                    </div>
+
+                    <div class="equipment-card">
+                        <div class="equipment-image">💨</div>
+                        <div class="equipment-content">
+                            <h3 class="equipment-name">Hopothermia Device</h3>
+                            <div class="equipment-brand">Astro Brewing</div>
+                            <p class="equipment-description">
+                                Our proprietary hop extract warming device for sterile hop additions 
+                                during active fermentation without opening the fermenter.
+                            </p>
+                            <div class="equipment-specs">
+                                <h5>Specifications:</h5>
+                                <ul class="specs-list">
+                                    <li>Closed-system design</li>
+                                    <li>Temperature-controlled delivery</li>
+                                    <li>Contamination prevention</li>
+                                    <li>Programmable timing</li>
+                                </ul>
+                            </div>
+                            <a href="brewcraft.html" class="affiliate-link">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Category switching
+        function showCategory(categoryId) {
+            // Hide all categories
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected category
+            document.getElementById(categoryId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+                
