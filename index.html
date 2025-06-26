@@ -871,36 +871,44 @@
                 font-size: 24px;
             }
 
-            /* Mobile: Keep horizontal layout but smaller */
+            /* Mobile: Switch to vertical layout */
             .beer-card {
-                height: 200px;
+                height: auto;
                 max-width: 100%;
-                flex-direction: row !important;
-                min-height: 200px;
+                flex-direction: column !important; /* Vertical layout for mobile */
+                min-height: auto;
             }
 
             .beer-image,
             .beer-image-placeholder {
-                width: 200px;
-                min-width: 200px;
-                height: 100%;
-                border-radius: 20px 0 0 20px;
+                width: 100%;
+                min-width: 100%;
+                height: 200px; /* Fixed height for mobile */
+                border-radius: 20px 20px 0 0; /* Round top corners only */
             }
 
             .beer-content {
-                padding: 15px 20px;
+                padding: 20px;
+                width: 100%;
             }
 
             .beer-name {
-                font-size: 1.2rem;
+                font-size: 1.4rem;
+                margin-bottom: 10px;
             }
 
             .beer-description {
-                font-size: 12px;
+                font-size: 14px;
+                line-height: 1.5;
+                margin-bottom: 15px;
             }
 
             .stat-value {
-                font-size: 1rem;
+                font-size: 1.2rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
             }
         }
 
@@ -1069,16 +1077,20 @@
             <div class="contact-info fade-in">
                 <h2>Mission Control</h2>
                 <div class="contact-item">
-                    <strong>Location:</strong>
-                    <span>North East Iowa</span>
+                    <strong>Address:</strong>
+                    <span>2847 Constellation Drive<br>Brewtown, ST 12345</span>
+                </div>
+                <div class="contact-item">
+                    <strong>Phone:</strong>
+                    <span>(555) ASTRO-BREW</span>
                 </div>
                 <div class="contact-item">
                     <strong>Email:</strong>
-                    <span>astro@astrobrewing.com</span>
+                    <span>hello@astrobrewing.com</span>
                 </div>
                 <div class="contact-item">
                     <strong>Hours:</strong>
-                    <span>Coming Soon!</span>
+                    <span>Mon-Thu: 4PM-10PM<br>Fri-Sat: 2PM-12AM<br>Sun: 2PM-9PM</span>
                 </div>
             </div>
             <div class="contact-form fade-in">
@@ -1107,7 +1119,10 @@
 
     <footer>
         <div class="social-links">
-            <a href="https://www.instagram.com/astro_brewing/">📷</a>
+            <a href="#">📘</a>
+            <a href="#">📷</a>
+            <a href="#">🐦</a>
+            <a href="#">📍</a>
         </div>
         <p>&copy; 2025 Astro Brewing Company. All rights reserved. | Crafted with ❤️ and hops</p>
     </footer>
@@ -1328,7 +1343,7 @@
             
             // Only include description if we have teaser text
             const descriptionHtml = teaserText ? 
-                `<div class="beer-description">${teaserText.length > 500 ? teaserText.substring(0, 500) + '...' : teaserText}</div>` : 
+                `<div class="beer-description">${teaserText.length > 250 ? teaserText.substring(0, 250) + '...' : teaserText}</div>` : 
                 '';
             
             return `
