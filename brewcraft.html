@@ -594,44 +594,44 @@
 
         <div class="projects-grid">
             <div class="project-card fade-in">
-                <div class="project-image" style="background-image: url('images/hlthud.png'); background-size: cover; background-position: center;">
+                <div class="project-image" style="background-image: url('images/hlthudUI.png'); background-size: cover; background-position: center;">
                 </div>
                 <div class="project-content">
                     <h3 class="project-name">HLT HUD</h3>
-                    <div class="project-type">Hot Liquor Tank Smart Controller</div>
+                    <div class="project-type">Hot Liquor Tank Automation Controller</div>
                     <p class="project-description">
-                        An intelligent hot liquor tank controller that automates temperature management and water heating 
-                        for optimal brewing conditions. Features real-time monitoring, precise temperature control, and 
-                        integration with brewing schedules.
+                        A comprehensive hot liquor tank automation system featuring safety-critical design, delayed start 
+                        functionality, and intelligent water management. Eliminates manual monitoring while maintaining 
+                        the highest safety standards for heating element protection.
                     </p>
                     <div class="project-features">
                         <h4>Key Features:</h4>
                         <ul>
-                            <li>Precision temperature control (±0.5°F)</li>
-                            <li>Remote monitoring via mobile app</li>
-                            <li>Automated heating schedules</li>
-                            <li>Energy efficiency optimization</li>
-                            <li>Safety shutoff protocols</li>
+                            <li>Multi-layer safety system with redundant sensors</li>
+                            <li>Delayed start automation (unlimited window)</li>
+                            <li>Custom Nextion HMI interface</li>
+                            <li>Precision temperature profiles (±1°F)</li>
+                            <li>Automated water filling with overflow protection</li>
+                            <li>WiFi monitoring and remote status</li>
                         </ul>
                     </div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
                         <span class="project-status status-active">Active</span>
-                        <button disabled style="
+                        <a href="hlt-hud-case-study.html" style="
                             display: inline-block;
                             padding: 10px 20px;
-                            background: rgba(255, 255, 255, 0.1);
-                            color: rgba(255, 255, 255, 0.5);
-                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            background: linear-gradient(135deg, var(--primary), var(--accent));
+                            color: white;
+                            text-decoration: none;
                             border-radius: 20px;
                             font-size: 12px;
                             font-weight: 600;
                             text-transform: uppercase;
                             letter-spacing: 1px;
-                            cursor: not-allowed;
-                            opacity: 0.6;
-                        ">
-                            Case Study Coming Soon
-                        </button>
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(73, 190, 63, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                            View Case Study →
+                        </a>
                     </div>
                 </div>
             </div>
@@ -641,7 +641,7 @@
                 </div>
                 <div class="project-content">
                     <h3 class="project-name">SingleTap</h3>
-                    <div class="project-type">Universal Touchscreen Interface</div>
+                    <div class="project-type">Intelligent Keezer Control System</div>
                     <p class="project-description">
                         One interface to rule them all. A touchscreen control system that manages keezer temperature 
                         using machine learning algorithms that analyze local weather, room temperature, and dual keezer 
