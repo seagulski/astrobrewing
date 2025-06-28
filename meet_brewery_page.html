@@ -21,6 +21,8 @@
             --text-reversed: #E9EDF1;
             --glass: rgba(255, 255, 255, 0.1);
             --gold: #FFD700;
+            --focus-color: #00BFFF;
+            --focus-ring: 0 0 0 3px rgba(0, 191, 255, 0.5);
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
@@ -30,6 +32,38 @@
             background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2c1810 100%);
             color: var(--text-light);
             overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--focus-color);
+            color: var(--text-dark);
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 2000;
+            font-weight: bold;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        /* Focus styles */
+        *:focus {
+            outline: none;
+            box-shadow: var(--focus-ring);
+        }
+
+        button:focus,
+        a:focus,
+        input:focus {
+            outline: 2px solid var(--focus-color);
+            outline-offset: 2px;
         }
 
         /* Navigation */
@@ -93,7 +127,8 @@
         }
 
         .nav-links a:hover,
-        .nav-links a.active {
+        .nav-links a.active,
+        .nav-links a:focus {
             color: var(--primary);
             background: rgba(73, 190, 63, 0.1);
             transform: translateX(5px);
@@ -109,6 +144,11 @@
             background: rgba(73, 190, 63, 0.1);
             border: 1px solid rgba(73, 190, 63, 0.3);
             outline: none;
+        }
+
+        .hamburger:hover,
+        .hamburger:focus {
+            background: rgba(73, 190, 63, 0.2);
         }
 
         .hamburger span {
@@ -183,6 +223,13 @@
             padding: 5px;
             transition: all 0.3s ease;
             border-radius: 5px;
+            min-width: 44px;
+            min-height: 44px;
+        }
+
+        .mobile-close:hover,
+        .mobile-close:focus {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .mobile-nav-links {
@@ -204,10 +251,12 @@
             display: block;
             text-align: left;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 44px;
         }
 
         .mobile-nav-links a:hover,
-        .mobile-nav-links a.active {
+        .mobile-nav-links a.active,
+        .mobile-nav-links a:focus {
             color: var(--primary);
             background: rgba(73, 190, 63, 0.1);
             border-color: var(--primary);
@@ -251,12 +300,17 @@
             opacity: 0.9;
         }
 
-        /* Category Navigation */
-        .category-nav {
+        /* Local Navigation (Category Filters) */
+        .local-navigation {
             padding: 15px 0;
             margin: 20px 0 30px 0;
             position: relative;
             z-index: 100;
+            background: none;
+            border: none;
+            display: block;
+            width: auto;
+            height: auto;
         }
 
         .category-nav-container {
@@ -272,6 +326,7 @@
             list-style: none;
             margin: 0;
             padding: 0;
+            flex-wrap: wrap;
         }
 
         .category-links a {
@@ -286,9 +341,17 @@
             display: block;
             white-space: nowrap;
             background: transparent;
+            min-height: 44px;
         }
 
         .category-links a:hover,
+        .category-links a:focus {
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(73, 190, 63, 0.3);
+        }
+
         .category-links a.active {
             color: var(--primary);
             background: rgba(73, 190, 63, 0.2);
@@ -346,7 +409,8 @@
             margin: 0 auto;
         }
 
-        .equipment-card:hover {
+        .equipment-card:hover,
+        .equipment-card:focus-within {
             transform: translateY(-5px);
             border-color: var(--primary);
             box-shadow: 
@@ -382,6 +446,7 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 15px;
+            gap: 15px;
         }
 
         .equipment-name {
@@ -403,6 +468,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            flex-shrink: 0;
         }
 
         .star-rating {
@@ -488,9 +554,14 @@
             letter-spacing: 1px;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(73, 190, 63, 0.3);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .affiliate-link:hover {
+        .affiliate-link:hover,
+        .affiliate-link:focus {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(73, 190, 63, 0.4);
         }
@@ -503,6 +574,24 @@
 
         .category-section.active {
             display: block;
+        }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Improved contrast for better accessibility */
+        .text-low-contrast {
+            color: #B0B0B0;
         }
 
         /* Responsive Design */
@@ -559,6 +648,18 @@
                 align-items: flex-start;
                 margin-top: 10px;
             }
+
+            .category-links {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .category-links a {
+                width: auto;
+                max-width: none;
+                text-align: center;
+            }
         }
 
         .fade-in {
@@ -571,105 +672,150 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --primary: #00FF00;
+                --accent: #FF00FF;
+                --text-light: #FFFFFF;
+                --text-dark: #000000;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .fade-in {
+                transition: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <nav>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <nav role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <img src="images/astro-logo.svg" alt="Astro Brewing Company" class="logo">
+            <img src="images/astro-logo.svg" alt="Astro Brewing Company Logo" class="logo">
             
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#beers">Beers</a></li>
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="brewcraft.html">Brewcraft</a></li>
-                <li><a href="meet-the-brewery.html" class="active">Meet the Brewery</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="index.html" aria-label="Go to home page">Home</a></li>
+                <li><a href="index.html#beers" aria-label="View our beer selection">Beers</a></li>
+                <li><a href="index.html#about" aria-label="Learn about our company">About</a></li>
+                <li><a href="brewcraft.html" aria-label="Explore our brewing craftsmanship">Brewcraft</a></li>
+                <li><a href="meet-the-brewery.html" class="active" aria-current="page" aria-label="Meet the brewery equipment - current page">Meet the Brewery</a></li>
+                <li><a href="index.html#contact" aria-label="Contact us">Contact</a></li>
             </ul>
 
-            <div class="hamburger" onclick="toggleMobileMenu()">
+            <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Open mobile navigation menu" aria-expanded="false" aria-controls="mobileMenu">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+                <span class="sr-only">Menu</span>
+            </button>
         </div>
     </nav>
 
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()" aria-hidden="true"></div>
     
-    <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu" id="mobileMenu" role="dialog" aria-labelledby="mobile-menu-title" aria-hidden="true">
         <div class="mobile-menu-header">
-            <img src="images/astro-logo.svg" alt="Astro Brewing Company" class="mobile-menu-logo">
-            <button class="mobile-close" onclick="closeMobileMenu()">&times;</button>
+            <img src="images/astro-logo.svg" alt="Astro Brewing Company Logo" class="mobile-menu-logo">
+            <button class="mobile-close" onclick="closeMobileMenu()" aria-label="Close mobile navigation menu">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <ul class="mobile-nav-links">
-            <li><a href="index.html" onclick="closeMobileMenu()">Home</a></li>
-            <li><a href="index.html#beers" onclick="closeMobileMenu()">Beers</a></li>
-            <li><a href="index.html#about" onclick="closeMobileMenu()">About</a></li>
-            <li><a href="brewcraft.html" onclick="closeMobileMenu()">Brewcraft</a></li>
-            <li><a href="meet-the-brewery.html" class="active" onclick="closeMobileMenu()">Meet the Brewery</a></li>
-            <li><a href="index.html#contact" onclick="closeMobileMenu()">Contact</a></li>
+        <h2 id="mobile-menu-title" class="sr-only">Mobile Navigation Menu</h2>
+        <ul class="mobile-nav-links" role="list">
+            <li><a href="index.html" onclick="closeMobileMenu()" tabindex="-1">Home</a></li>
+            <li><a href="index.html#beers" onclick="closeMobileMenu()" tabindex="-1">Beers</a></li>
+            <li><a href="index.html#about" onclick="closeMobileMenu()" tabindex="-1">About</a></li>
+            <li><a href="brewcraft.html" onclick="closeMobileMenu()" tabindex="-1">Brewcraft</a></li>
+            <li><a href="meet-the-brewery.html" class="active" onclick="closeMobileMenu()" aria-current="page" tabindex="-1">Meet the Brewery</a></li>
+            <li><a href="index.html#contact" onclick="closeMobileMenu()" tabindex="-1">Contact</a></li>
         </ul>
     </div>
 
-    <main class="main-content">
-        <div class="page-header fade-in">
+    <main class="main-content" id="main-content">
+        <header class="page-header fade-in">
             <div class="page-subtitle">Equipment Arsenal</div>
             <h1 class="page-title">Meet the Brewery</h1>
             <p class="page-description">
                 Discover the cutting-edge equipment that powers our cosmic brewing operation. From grain to glass, 
                 every piece of hardware is carefully selected to deliver stellar results and out-of-this-world flavors.
             </p>
-        </div>
+        </header>
 
-        <div class="category-nav fade-in">
+        <nav class="local-navigation fade-in" role="navigation" aria-label="Equipment categories">
             <div class="category-nav-container">
-                <ul class="category-links">
-                    <li><a href="#hot-side" class="active" onclick="showCategory('hot-side', event)">🔥 Hot Side</a></li>
-                    <li><a href="#cold-side" onclick="showCategory('cold-side', event)">❄️ Cold Side</a></li>
-                    <li><a href="#misc" onclick="showCategory('misc', event)">🔧 Miscellaneous</a></li>
+                <ul class="category-links" role="tablist">
+                    <li role="presentation">
+                        <a href="#hot-side" class="active" onclick="showCategory('hot-side', event)" role="tab" aria-selected="true" aria-controls="hot-side" id="tab-hot-side">
+                            <span aria-hidden="true">🔥</span> Hot Side
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#cold-side" onclick="showCategory('cold-side', event)" role="tab" aria-selected="false" aria-controls="cold-side" id="tab-cold-side">
+                            <span aria-hidden="true">❄️</span> Cold Side
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#misc" onclick="showCategory('misc', event)" role="tab" aria-selected="false" aria-controls="misc" id="tab-misc">
+                            <span aria-hidden="true">🔧</span> Miscellaneous
+                        </a>
+                    </li>
                 </ul>
             </div>
-        </div>
+        </nav>
 
         <!-- Hot Side Equipment -->
-        <div id="hot-side" class="category-section active fade-in">
+        <section id="hot-side" class="category-section active fade-in" role="tabpanel" aria-labelledby="tab-hot-side">
             <div class="equipment-section">
-                <h2 class="section-title">🔥 Hot Side Equipment</h2>
+                <h2 class="section-title">
+                    <span aria-hidden="true">🔥</span> Hot Side Equipment
+                </h2>
                 <p class="section-description">
                     The foundation of great beer starts here. Our hot side equipment handles mashing, lautering, 
                     boiling, and everything that happens before fermentation begins.
                 </p>
                 
-                <div class="equipment-grid">
-                    <div class="equipment-card">
-                        <div class="equipment-image">🏭</div>
+                <div class="equipment-grid" role="grid" aria-label="Hot side equipment">
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools B80Pro Brewing System">
+                            <span aria-hidden="true">🏭</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools B80Pro Brewing System</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Game-changer for consistency. The automated temperature control and integrated pumping system eliminated my biggest brewing pain points. Worth every penny for serious homebrewers."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Professional-grade all-in-one brewing system with precise temperature control, 
                                 automated cleaning cycles, and integrated recirculation pump for consistent results.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>240V 6kW heating system</li>
                                     <li>44lb malt capacity</li>
@@ -677,38 +823,40 @@
                                     <li>CIP-ready design</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=b80pro-brewing-system" class="affiliate-link">View Product</a>
+                            <a href="morebeer-redirect.html?product=b80pro-brewing-system" class="affiliate-link" aria-describedby="affiliate-disclaimer">View Product</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🌊</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Fluid Control System">
+                            <span aria-hidden="true">🌊</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Fluid Control System (FCS)</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "The FCS transforms brewing from manual labor to automated precision. Set-and-forget operation with real-time monitoring makes brew days almost effortless."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Automated control system for fluid management with solenoid valves, 
                                 pumps, and sensors for hands-free brewing operations.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>Automated flow control</li>
                                     <li>Real-time monitoring</li>
@@ -716,38 +864,40 @@
                                     <li>Safety interlocks</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=fcs-starter-kit" class="affiliate-link">View System</a>
+                            <a href="morebeer-redirect.html?product=fcs-starter-kit" class="affiliate-link" aria-describedby="affiliate-disclaimer">View System</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">💨</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Steam Condenser">
+                            <span aria-hidden="true">💨</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Steam Condenser</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star empty">★</span>
+                                    <div class="star-rating" role="img" aria-label="4 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star empty" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">4/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Excellent for indoor brewing setups. Captures steam effectively, though requires good water flow for optimal performance. A must-have for garage brewers."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Efficient steam recovery system that condenses boil-off vapor back to water, 
                                 reducing humidity and improving indoor brewing conditions.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>Water-cooled condenser</li>
                                     <li>Tri-clamp connections</li>
@@ -755,38 +905,40 @@
                                     <li>Easy to clean</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=steam-condenser" class="affiliate-link">Learn More</a>
+                            <a href="morebeer-redirect.html?product=steam-condenser" class="affiliate-link" aria-describedby="affiliate-disclaimer">Learn More</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🔥</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Heating Element">
+                            <span aria-hidden="true">🔥</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Heating Element</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Rock-solid reliability. Powers our HLT perfectly with even heating and precise temperature control. Quality construction that's built to last."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Professional 500W heating element with 2" tri-clamp fitting for direct 
                                 vessel installation and precise temperature control.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>500W power output</li>
                                     <li>230V operation</li>
@@ -794,38 +946,40 @@
                                     <li>Food-grade construction</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=heating-element" class="affiliate-link">Shop Now</a>
+                            <a href="morebeer-redirect.html?product=heating-element" class="affiliate-link" aria-describedby="affiliate-disclaimer">Shop Now</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🎩</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Steam Hat">
+                            <span aria-hidden="true">🎩</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Steam Hat</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star empty">★</span>
+                                    <div class="star-rating" role="img" aria-label="4 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star empty" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">4/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Great addition to the B80Pro system. Effective steam management, though the seal could be improved. Works well with the condenser for complete vapor control."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Steam collection hood designed specifically for the B80Pro system, 
                                 directing vapor efficiently to the condenser system.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>B80Pro compatibility</li>
                                     <li>Efficient vapor capture</li>
@@ -833,38 +987,40 @@
                                     <li>Easy installation</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=steam-hat" class="affiliate-link">View Product</a>
+                            <a href="morebeer-redirect.html?product=steam-hat" class="affiliate-link" aria-describedby="affiliate-disclaimer">View Product</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🌪️</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Trubinator Medium">
+                            <span aria-hidden="true">🌪️</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Trubinator Medium</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Incredible whirlpool action! Creates perfect trub cone every time. Significantly clearer wort transfers and better hop utilization. Essential for clear beer."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Whirlpool fitting that creates optimal wort circulation for trub settling 
                                 and hop matter separation during the whirlpool phase.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>Optimized whirlpool geometry</li>
                                     <li>Medium batch size compatibility</li>
@@ -872,38 +1028,40 @@
                                     <li>Enhanced trub separation</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=trubinator-medium" class="affiliate-link">Get Yours</a>
+                            <a href="morebeer-redirect.html?product=trubinator-medium" class="affiliate-link" aria-describedby="affiliate-disclaimer">Get Yours</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🔄</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Circulation Manifold">
+                            <span aria-hidden="true">🔄</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Circulation Manifold</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Perfect addition to the B80Pro system. Creates even mash temperature distribution and improves extraction efficiency. Professional-grade construction."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Circulation manifold designed for the B80Pro system to ensure 
                                 even mash temperature distribution and improved extraction efficiency.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>B80Pro compatibility</li>
                                     <li>Even flow distribution</li>
@@ -911,38 +1069,40 @@
                                     <li>Easy installation</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=circulation-manifold" class="affiliate-link">View Product</a>
+                            <a href="morebeer-redirect.html?product=circulation-manifold" class="affiliate-link" aria-describedby="affiliate-disclaimer">View Product</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🍶</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Neoprene Insulation Jacket">
+                            <span aria-hidden="true">🍶</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Neoprene Insulation Jacket</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star empty">★</span>
+                                    <div class="star-rating" role="img" aria-label="4 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star empty" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">4/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Great for energy efficiency and temperature stability. Custom fit for the B80Pro makes installation easy. Noticeable improvement in heat retention."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Custom-fitted neoprene insulation jacket for the B80Pro system to 
                                 maintain stable temperatures and improve energy efficiency.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>B80Pro custom fit</li>
                                     <li>Energy efficient</li>
@@ -950,38 +1110,40 @@
                                     <li>Durable neoprene material</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=neoprene-jacket" class="affiliate-link">Keep Warm</a>
+                            <a href="morebeer-redirect.html?product=neoprene-jacket" class="affiliate-link" aria-describedby="affiliate-disclaimer">Keep Warm</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">📦</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Starter Pack 4-Valve">
+                            <span aria-hidden="true">📦</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Starter Pack 4-Valve</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Everything you need to get started with professional brewing automation. Quality components and clear documentation. Great value for the complete package."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Complete starter package with 4 valves and essential accessories 
                                 for B40Pro, B80Pro, and B150Pro brewing systems.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>4-valve configuration</li>
                                     <li>Pro series compatibility</li>
@@ -989,51 +1151,55 @@
                                     <li>Professional components</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=starter-pack-4valve" class="affiliate-link">Get Started</a>
+                            <a href="morebeer-redirect.html?product=starter-pack-4valve" class="affiliate-link" aria-describedby="affiliate-disclaimer">Get Started</a>
                         </div>
-                    </div>
+                    </article>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Cold Side Equipment -->
-        <div id="cold-side" class="category-section fade-in">
+        <section id="cold-side" class="category-section fade-in" role="tabpanel" aria-labelledby="tab-cold-side" aria-hidden="true">
             <div class="equipment-section">
-                <h2 class="section-title">❄️ Cold Side Equipment</h2>
+                <h2 class="section-title">
+                    <span aria-hidden="true">❄️</span> Cold Side Equipment
+                </h2>
                 <p class="section-description">
                     Where the magic happens. Our cold side setup handles fermentation, conditioning, 
                     and serving with precision temperature control and contamination prevention.
                 </p>
                 
-                <div class="equipment-grid">
-                    <div class="equipment-card">
-                        <div class="equipment-image">🏺</div>
+                <div class="equipment-grid" role="grid" aria-label="Cold side equipment">
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools F80 Unitank 40-140L">
+                            <span aria-hidden="true">🏺</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools F80 Unitank 40-140L</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Professional-grade fermentation vessel that rivals commercial equipment. The conical design and dump valve make yeast harvesting effortless. Build quality is exceptional."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Large capacity conical fermenter with dump valve, sample port, and 
                                 tri-clamp fittings for professional fermentation and conditioning.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>40-140L capacity range</li>
                                     <li>Conical bottom design</li>
@@ -1041,38 +1207,40 @@
                                     <li>Sample port included</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=f80-unitank-40" class="affiliate-link">View Fermenter</a>
+                            <a href="morebeer-redirect.html?product=f80-unitank-40" class="affiliate-link" aria-describedby="affiliate-disclaimer">View Fermenter</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🧪</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools F80 Unitank 20-75L">
+                            <span aria-hidden="true">🧪</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools F80 Unitank 20-75L</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Perfect size for smaller batches and experimental brews. Same professional features as the larger model but easier to handle and clean. Great for recipe development."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Compact conical fermenter ideal for smaller batches and experimental 
                                 brewing with all the professional features of the larger models.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>20-75L capacity range</li>
                                     <li>Space-efficient design</li>
@@ -1080,38 +1248,40 @@
                                     <li>Easy to handle and clean</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=f80-unitank-20" class="affiliate-link">Shop Now</a>
+                            <a href="morebeer-redirect.html?product=f80-unitank-20" class="affiliate-link" aria-describedby="affiliate-disclaimer">Shop Now</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🧊</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools MiniUni 10">
+                            <span aria-hidden="true">🧊</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools MiniUni 10</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star empty">★</span>
+                                    <div class="star-rating" role="img" aria-label="4 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star empty" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">4/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Excellent for test batches and small experimental brews. The mini size is perfect for trying new recipes without committing to large volumes. Quality construction."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Compact fermenter perfect for test batches, recipe development, 
                                 and small-scale experimental brewing projects.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>10L capacity</li>
                                     <li>Conical design</li>
@@ -1119,38 +1289,40 @@
                                     <li>Perfect for testing</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=miniuni-10" class="affiliate-link">Get Started</a>
+                            <a href="morebeer-redirect.html?product=miniuni-10" class="affiliate-link" aria-describedby="affiliate-disclaimer">Get Started</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🏠</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools MiniUni 50">
+                            <span aria-hidden="true">🏠</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools MiniUni 50</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Sweet spot for homebrewing! Large enough for full batches but manageable for one person. The tri-clamp fittings make cleaning and transfers professional-grade."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Mid-sized conical fermenter that bridges the gap between small test 
                                 batches and full production runs with professional features.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>50L capacity</li>
                                     <li>Optimal homebrewing size</li>
@@ -1158,38 +1330,40 @@
                                     <li>Easy single-person operation</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=miniuni-50" class="affiliate-link">Order Now</a>
+                            <a href="morebeer-redirect.html?product=miniuni-50" class="affiliate-link" aria-describedby="affiliate-disclaimer">Order Now</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🍺</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="Komos Draft Box 2-Tap">
+                            <span aria-hidden="true">🍺</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">Komos Draft Box 2-Tap</h3>
                                     <div class="equipment-brand">Komos</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Gorgeous stainless steel construction that looks professional and pours beautifully. Temperature stability is excellent and the build quality justifies the investment."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Premium stainless steel draft system with dual taps, precise 
                                 temperature control, and professional-grade components.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>2-tap configuration</li>
                                     <li>Stainless steel construction</li>
@@ -1197,38 +1371,40 @@
                                     <li>Professional appearance</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=komos-draft-box" class="affiliate-link">View System</a>
+                            <a href="morebeer-redirect.html?product=komos-draft-box" class="affiliate-link" aria-describedby="affiliate-disclaimer">View System</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🎯</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Spunding Valve">
+                            <span aria-hidden="true">🎯</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Spunding Valve</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Game-changer for pressure fermentation! Maintains perfect pressure throughout fermentation and carbonation. The precision and reliability are outstanding."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Precision pressure relief valve for controlled fermentation pressure 
                                 and natural carbonation with 34mm tri-clamp fitting.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>0.2-2 bar pressure range</li>
                                     <li>0.3-2 PSI precision</li>
@@ -1236,38 +1412,40 @@
                                     <li>Pressure fermentation ready</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=spunding-valve" class="affiliate-link">Learn More</a>
+                            <a href="morebeer-redirect.html?product=spunding-valve" class="affiliate-link" aria-describedby="affiliate-disclaimer">Learn More</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🧽</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Inline Filter Kit">
+                            <span aria-hidden="true">🧽</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Inline Filter Kit</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star empty">★</span>
+                                    <div class="star-rating" role="img" aria-label="4 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star empty" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">4/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Great for clarifying beer transfers. Noticeably clearer beer with minimal flavor impact. The ball lock connections make it easy to integrate into existing systems."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Inline filtration system with ball lock connections for clarifying 
                                 beer during transfers without affecting flavor or aroma.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>2 ball lock connections</li>
                                     <li>Replaceable filter elements</li>
@@ -1275,38 +1453,40 @@
                                     <li>Easy to sanitize</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=inline-filter-kit" class="affiliate-link">Filter Now</a>
+                            <a href="morebeer-redirect.html?product=inline-filter-kit" class="affiliate-link" aria-describedby="affiliate-disclaimer">Filter Now</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🔗</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Gas-In Ball Lock Adapter">
+                            <span aria-hidden="true">🔗</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Gas-In Ball Lock Adapter</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Perfect for connecting ball lock systems to tri-clamp fittings. High-quality construction and secure connections. Makes system integration seamless."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Ball lock adapter with 34mm tri-clamp connection for integrating 
                                 gas systems with professional brewing equipment.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>34mm tri-clamp fitting</li>
                                     <li>Ball lock compatibility</li>
@@ -1314,38 +1494,40 @@
                                     <li>Professional integration</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=gasin-ball-lock" class="affiliate-link">Connect Gas</a>
+                            <a href="morebeer-redirect.html?product=gasin-ball-lock" class="affiliate-link" aria-describedby="affiliate-disclaimer">Connect Gas</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🧮</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Adjustable Dip Tube">
+                            <span aria-hidden="true">🧮</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Adjustable Dip Tube</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Brilliant design! Adjustable length means perfect positioning for any fermenter size. Eliminates guesswork and improves transfer efficiency."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Adjustable length dip tube with 34mm tri-clamp fitting for 
                                 optimal liquid transfer and minimal trub pickup.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>Adjustable length</li>
                                     <li>34mm tri-clamp connection</li>
@@ -1353,38 +1535,40 @@
                                     <li>Universal compatibility</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=dip-tube" class="affiliate-link">Adjust Perfect</a>
+                            <a href="morebeer-redirect.html?product=dip-tube" class="affiliate-link" aria-describedby="affiliate-disclaimer">Adjust Perfect</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🔧</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools 34mm Tri-Clamp">
+                            <span aria-hidden="true">🔧</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools 34mm Tri-Clamp</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Essential for professional brewing connections. High-quality stainless steel construction with reliable sealing. Perfect for system assembly."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Professional 34mm tri-clamp fitting for secure, sanitary connections 
                                 between brewing system components.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>34mm diameter</li>
                                     <li>Stainless steel construction</li>
@@ -1392,38 +1576,40 @@
                                     <li>Professional grade</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=34mm-triclamp" class="affiliate-link">Get Clamps</a>
+                            <a href="morebeer-redirect.html?product=34mm-triclamp" class="affiliate-link" aria-describedby="affiliate-disclaimer">Get Clamps</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">⭕</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools TC Gaskets 34mm">
+                            <span aria-hidden="true">⭕</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools TC Gaskets 34mm</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "High-quality gaskets that create perfect seals. Food-grade silicone construction ensures safety and reliability. Essential spares to have on hand."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Food-grade silicone gaskets for 34mm tri-clamp connections, 
                                 ensuring leak-free, sanitary seals in brewing systems.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>34mm tri-clamp size</li>
                                     <li>Food-grade silicone</li>
@@ -1431,38 +1617,40 @@
                                     <li>Easy to clean and replace</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=tc-gaskets-34mm" class="affiliate-link">Get Gaskets</a>
+                            <a href="morebeer-redirect.html?product=tc-gaskets-34mm" class="affiliate-link" aria-describedby="affiliate-disclaimer">Get Gaskets</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🧪</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Silicone Tube">
+                            <span aria-hidden="true">🧪</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Silicone Tube</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star empty">★</span>
+                                    <div class="star-rating" role="img" aria-label="4 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star empty" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">4/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Flexible and durable tubing for various brewing connections. Easy to clean and sanitize. Good chemical resistance for brewing applications."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Food-grade silicone tubing for flexible connections and transfers 
                                 in brewing systems with excellent chemical and temperature resistance.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>Food-grade silicone</li>
                                     <li>Temperature resistant</li>
@@ -1470,51 +1658,55 @@
                                     <li>Easy to sanitize</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=silicone-tube" class="affiliate-link">Get Tubing</a>
+                            <a href="morebeer-redirect.html?product=silicone-tube" class="affiliate-link" aria-describedby="affiliate-disclaimer">Get Tubing</a>
                         </div>
-                    </div>
+                    </article>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Miscellaneous Equipment -->
-        <div id="misc" class="category-section fade-in">
+        <section id="misc" class="category-section fade-in" role="tabpanel" aria-labelledby="tab-misc" aria-hidden="true">
             <div class="equipment-section">
-                <h2 class="section-title">🔧 Miscellaneous Equipment</h2>
+                <h2 class="section-title">
+                    <span aria-hidden="true">🔧</span> Miscellaneous Equipment
+                </h2>
                 <p class="section-description">
                     The supporting cast that makes everything possible. From testing to cleaning, 
                     these tools ensure quality and consistency in every batch.
                 </p>
                 
-                <div class="equipment-grid">
-                    <div class="equipment-card">
-                        <div class="equipment-image">🔗</div>
+                <div class="equipment-grid" role="grid" aria-label="Miscellaneous equipment">
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools 3-Way Ball Valve">
+                            <span aria-hidden="true">🔗</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools 3-Way Ball Valve</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Essential for automated brewing systems. Smooth operation and precise flow control. The 3-way design eliminates the need for multiple valves in complex setups."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Professional 3-way ball valve with 34mm tri-clamp fitting for 
                                 automated flow control and direction switching in brewing systems.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>34mm tri-clamp fitting</li>
                                     <li>DN15 flow diameter</li>
@@ -1522,38 +1714,40 @@
                                     <li>Automation-ready design</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=3way-ball-valve" class="affiliate-link">Shop Valve</a>
+                            <a href="morebeer-redirect.html?product=3way-ball-valve" class="affiliate-link" aria-describedby="affiliate-disclaimer">Shop Valve</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">📡</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools FCS Density Sensor">
+                            <span aria-hidden="true">📡</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools FCS Density Sensor</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Revolutionary for monitoring fermentation! Real-time gravity and temperature readings without opening the fermenter. Data logging capabilities are fantastic."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Advanced density and temperature sensor for real-time fermentation 
                                 monitoring with digital connectivity and data logging capabilities.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>Real-time gravity measurement</li>
                                     <li>Temperature monitoring</li>
@@ -1561,38 +1755,40 @@
                                     <li>Fermentation tracking</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=fcs-density-sensor" class="affiliate-link">Get Sensor</a>
+                            <a href="morebeer-redirect.html?product=fcs-density-sensor" class="affiliate-link" aria-describedby="affiliate-disclaimer">Get Sensor</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">⚙️</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Quick Connector">
+                            <span aria-hidden="true">⚙️</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Quick Connector</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Makes connections and disconnections effortless. High-quality construction and reliable sealing. Essential for any serious brewing setup."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Female quick disconnect connector with 3/8" NPT threading for 
                                 fast and secure connections in brewing systems.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>Female 3/8" NPT</li>
                                     <li>Quick disconnect design</li>
@@ -1600,77 +1796,40 @@
                                     <li>Easy operation</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=quick-connector" class="affiliate-link">Connect</a>
+                            <a href="morebeer-redirect.html?product=quick-connector" class="affiliate-link" aria-describedby="affiliate-disclaimer">Connect</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🔄</div>
-                        <div class="equipment-content">
-                            <div class="equipment-header">
-                                <div>
-                                    <h3 class="equipment-name">BrewTools Circulation Manifold</h3>
-                                    <div class="equipment-brand">BrewTools</div>
-                                </div>
-                                <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                    </div>
-                                    <div class="rating-text">5/5 stars</div>
-                                </div>
-                            </div>
-                            <div class="equipment-review">
-                                "Perfect addition to the B80Pro system. Creates even mash temperature distribution and improves extraction efficiency. Professional-grade construction."
-                            </div>
-                            <p class="equipment-description">
-                                Circulation manifold designed for the B80Pro system to ensure 
-                                even mash temperature distribution and improved extraction efficiency.
-                            </p>
-                            <div class="equipment-specs">
-                                <h5>Key Features:</h5>
-                                <ul class="specs-list">
-                                    <li>B80Pro compatibility</li>
-                                    <li>Even flow distribution</li>
-                                    <li>Improved mash efficiency</li>
-                                    <li>Easy installation</li>
-                                </ul>
-                            </div>
-                            <a href="morebeer-redirect.html?product=circulation-manifold" class="affiliate-link">View Product</a>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Inline Oxygenation Kit">
+                            <span aria-hidden="true">💧</span>
                         </div>
-                    </div>
-
-                    <div class="equipment-card">
-                        <div class="equipment-image">💧</div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Inline Oxygenation Kit</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
+                                    <div class="star-rating" role="img" aria-label="5 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">5/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Consistent oxygenation levels every time! Much more reliable than manual shaking or splashing. Improved fermentation performance and healthier yeast."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Precision oxygenation system for consistent dissolved oxygen levels 
                                 in wort during transfer to fermenter for optimal yeast health.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>Consistent oxygenation</li>
                                     <li>Inline installation</li>
@@ -1678,38 +1837,40 @@
                                     <li>Easy to use and clean</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=inline-oxygenation" class="affiliate-link">Oxygenate</a>
+                            <a href="morebeer-redirect.html?product=inline-oxygenation" class="affiliate-link" aria-describedby="affiliate-disclaimer">Oxygenate</a>
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="equipment-card">
-                        <div class="equipment-image">🧽</div>
+                    <article class="equipment-card" role="gridcell">
+                        <div class="equipment-image" role="img" aria-label="BrewTools Inline Filter Kit">
+                            <span aria-hidden="true">🧽</span>
+                        </div>
                         <div class="equipment-content">
-                            <div class="equipment-header">
+                            <header class="equipment-header">
                                 <div>
                                     <h3 class="equipment-name">BrewTools Inline Filter Kit</h3>
                                     <div class="equipment-brand">BrewTools</div>
                                 </div>
                                 <div class="rating-container">
-                                    <div class="star-rating">
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star empty">★</span>
+                                    <div class="star-rating" role="img" aria-label="4 out of 5 stars">
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star" aria-hidden="true">★</span>
+                                        <span class="star empty" aria-hidden="true">★</span>
                                     </div>
                                     <div class="rating-text">4/5 stars</div>
                                 </div>
-                            </div>
-                            <div class="equipment-review">
+                            </header>
+                            <blockquote class="equipment-review">
                                 "Great for clarifying beer transfers. Noticeably clearer beer with minimal flavor impact. The ball lock connections make it easy to integrate into existing systems."
-                            </div>
+                            </blockquote>
                             <p class="equipment-description">
                                 Inline filtration system with ball lock connections for clarifying 
                                 beer during transfers without affecting flavor or aroma.
                             </p>
                             <div class="equipment-specs">
-                                <h5>Key Features:</h5>
+                                <h4>Key Features:</h4>
                                 <ul class="specs-list">
                                     <li>2 ball lock connections</li>
                                     <li>Replaceable filter elements</li>
@@ -1717,11 +1878,15 @@
                                     <li>Easy to sanitize</li>
                                 </ul>
                             </div>
-                            <a href="morebeer-redirect.html?product=inline-filter-kit" class="affiliate-link">Filter Now</a>
+                            <a href="morebeer-redirect.html?product=inline-filter-kit" class="affiliate-link" aria-describedby="affiliate-disclaimer">Filter Now</a>
                         </div>
-                    </div>
+                    </article>
                 </div>
             </div>
+        </section>
+
+        <div id="affiliate-disclaimer" class="sr-only">
+            These are affiliate links that may earn us a commission at no extra cost to you.
         </div>
     </main>
 
@@ -1776,15 +1941,30 @@
             const hamburger = document.querySelector('.hamburger');
             const mobileMenu = document.getElementById('mobileMenu');
             const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
             
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
             mobileMenuOverlay.classList.toggle('active');
             
+            // Update ARIA attributes
+            hamburger.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.setAttribute('aria-hidden', isExpanded);
+            
+            // Manage tab focus
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.setAttribute('tabindex', isExpanded ? '0' : '-1');
+            });
+            
             if (mobileMenu.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
+                // Focus first menu item
+                menuLinks[0]?.focus();
             } else {
                 document.body.style.overflow = '';
+                // Return focus to hamburger
+                hamburger.focus();
             }
         }
 
@@ -1796,37 +1976,126 @@
             hamburger.classList.remove('active');
             mobileMenu.classList.remove('active');
             mobileMenuOverlay.classList.remove('active');
+            
+            // Update ARIA attributes
+            hamburger.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            
+            // Reset tab indices
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.setAttribute('tabindex', '-1');
+            });
+            
             document.body.style.overflow = '';
+            hamburger.focus();
         }
 
+        // Keyboard navigation for mobile menu
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const isOpen = mobileMenu.classList.contains('active');
+            
+            if (e.key === 'Escape' && isOpen) {
                 closeMobileMenu();
+            }
+            
+            // Tab trapping in mobile menu
+            if (isOpen && e.key === 'Tab') {
+                const focusableElements = mobileMenu.querySelectorAll('a, button');
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+                
+                if (e.shiftKey) {
+                    if (document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    }
+                } else {
+                    if (document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
             }
         });
 
-        // Category switching
+        // Category switching with accessibility
         function showCategory(categoryId, event) {
             event.preventDefault();
             
+            // Update sections
             document.querySelectorAll('.category-section').forEach(section => {
                 section.classList.remove('active');
+                section.setAttribute('aria-hidden', 'true');
             });
             
+            // Update tab navigation
             document.querySelectorAll('.category-links a').forEach(link => {
                 link.classList.remove('active');
+                link.setAttribute('aria-selected', 'false');
             });
             
-            document.getElementById(categoryId).classList.add('active');
-            event.target.classList.add('active');
+            // Activate selected
+            const targetSection = document.getElementById(categoryId);
+            const targetTab = event.target;
             
-            document.getElementById(categoryId).scrollIntoView({
+            targetSection.classList.add('active');
+            targetSection.setAttribute('aria-hidden', 'false');
+            targetTab.classList.add('active');
+            targetTab.setAttribute('aria-selected', 'true');
+            
+            // Announce change to screen readers
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.textContent = `Switched to ${targetTab.textContent} equipment section`;
+            document.body.appendChild(announcement);
+            
+            setTimeout(() => {
+                document.body.removeChild(announcement);
+            }, 1000);
+            
+            // Smooth scroll to section
+            targetSection.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
         }
 
-        // Scroll animations
+        // Keyboard navigation for category tabs
+        document.querySelectorAll('.category-links a').forEach((tab, index, tabs) => {
+            tab.addEventListener('keydown', (e) => {
+                let newIndex = index;
+                
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        newIndex = index > 0 ? index - 1 : tabs.length - 1;
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        newIndex = index < tabs.length - 1 ? index + 1 : 0;
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        newIndex = 0;
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        newIndex = tabs.length - 1;
+                        break;
+                    default:
+                        return;
+                }
+                
+                tabs[newIndex].focus();
+                tabs[newIndex].click();
+            });
+        });
+
+        // Scroll animations with reduced motion support
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -1840,9 +2109,17 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
+        // Only observe if user hasn't requested reduced motion
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        } else {
+            // For reduced motion, just make everything visible immediately
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.classList.add('visible');
+            });
+        }
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
@@ -1851,11 +2128,25 @@
             
             if (firstCategory && firstNav) {
                 firstCategory.classList.add('active');
+                firstCategory.setAttribute('aria-hidden', 'false');
                 firstNav.classList.add('active');
+                firstNav.setAttribute('aria-selected', 'true');
             }
+            
+            // Set initial mobile menu link states
+            const mobileMenuLinks = document.querySelectorAll('.mobile-nav-links a');
+            mobileMenuLinks.forEach(link => {
+                link.setAttribute('tabindex', '-1');
+            });
             
             // Load product images
             loadProductImages();
+            
+            // Set focus management for page load
+            const skipLink = document.querySelector('.skip-link');
+            if (window.location.hash === '#main-content') {
+                document.getElementById('main-content').focus();
+            }
         });
     </script>
 </body>
