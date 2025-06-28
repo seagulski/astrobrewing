@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brewcraft - Astro Brewing Company</title>
+    <title>Brewcraft - IoT Innovation Lab | Astro Brewing Company</title>
     <style>
         * {
             margin: 0;
@@ -29,6 +29,35 @@
             background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2c1810 100%);
             color: var(--text-light);
             overflow-x: hidden;
+        }
+
+        /* Skip to main content link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 0 0 4px 4px;
+            z-index: 9999;
+            font-weight: bold;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Focus styles for accessibility */
+        *:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Remove default focus styles for mouse users only */
+        .mouse-user *:focus {
+            outline: none;
         }
 
         /* Navigation - Vertical Sidebar */
@@ -91,7 +120,8 @@
             text-align: center;
         }
 
-        .nav-links a:hover {
+        .nav-links a:hover,
+        .nav-links a:focus {
             color: var(--primary);
             background: rgba(73, 190, 63, 0.1);
             transform: translateX(5px);
@@ -136,7 +166,8 @@
         }
 
         .nav-links a:hover::after,
-        .nav-links a.active::after {
+        .nav-links a.active::after,
+        .nav-links a:focus::after {
             width: calc(100% - 40px);
         }
 
@@ -154,7 +185,8 @@
         }
 
         .hamburger:focus {
-            outline: none;
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
             box-shadow: 0 0 0 2px rgba(73, 190, 63, 0.3);
         }
 
@@ -251,7 +283,8 @@
             border-radius: 5px;
         }
 
-        .mobile-close:hover {
+        .mobile-close:hover,
+        .mobile-close:focus {
             color: var(--primary);
             background: rgba(73, 190, 63, 0.1);
         }
@@ -278,7 +311,8 @@
         }
 
         .mobile-nav-links a:hover,
-        .mobile-nav-links a.active {
+        .mobile-nav-links a.active,
+        .mobile-nav-links a:focus {
             color: var(--primary);
             background: rgba(73, 190, 63, 0.1);
             border-color: var(--primary);
@@ -344,7 +378,8 @@
             position: relative;
         }
 
-        .project-card:hover {
+        .project-card:hover,
+        .project-card:focus-within {
             transform: translateY(-10px);
             border-color: var(--primary);
             box-shadow: 
@@ -365,7 +400,8 @@
             z-index: -1;
         }
 
-        .project-card:hover::before {
+        .project-card:hover::before,
+        .project-card:focus-within::before {
             opacity: 0.05;
         }
 
@@ -466,6 +502,26 @@
             border: 1px solid rgba(255, 193, 7, 0.3);
         }
 
+        .case-study-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .case-study-link:hover,
+        .case-study-link:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(73, 190, 63, 0.3);
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             /* Show hamburger menu on mobile */
@@ -537,76 +593,138 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Screen reader only text */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --primary: #00ff00;
+                --accent: #ff00ff;
+                --text-light: #ffffff;
+                --glass: rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body>
-    <nav>
+    <!-- Skip to main content link -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <nav role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <img src="images/astro-logo.svg" alt="Astro Brewing Company" class="logo">
+            <img src="images/astro-logo.svg" alt="Astro Brewing Company logo" class="logo">
             
             <!-- Desktop Navigation -->
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#beers">Beers</a></li>
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="brewcraft.html" class="active">Brewcraft</a></li>
-                <li><a href="meet_brewery_page.html">Meet the Brewery</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="index.html" role="menuitem">Home</a></li>
+                <li role="none"><a href="index.html#beers" role="menuitem">Beers</a></li>
+                <li role="none"><a href="index.html#about" role="menuitem">About</a></li>
+                <li role="none"><a href="brewcraft.html" class="active" role="menuitem" aria-current="page">Brewcraft</a></li>
+                <li role="none"><a href="meet_brewery_page.html" role="menuitem">Meet the Brewery</a></li>
+                <li role="none"><a href="index.html#contact" role="menuitem">Contact</a></li>
             </ul>
 
             <!-- Mobile Hamburger Menu -->
-            <div class="hamburger" onclick="toggleMobileMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            <button class="hamburger" 
+                    onclick="toggleMobileMenu()" 
+                    aria-label="Toggle mobile menu"
+                    aria-expanded="false"
+                    aria-controls="mobileMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </button>
         </div>
     </nav>
 
     <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
+    <div class="mobile-menu-overlay" 
+         id="mobileMenuOverlay" 
+         onclick="closeMobileMenu()"
+         aria-hidden="true"></div>
     
     <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
+    <nav class="mobile-menu" 
+         id="mobileMenu" 
+         role="navigation" 
+         aria-label="Mobile navigation"
+         aria-hidden="true">
         <div class="mobile-menu-header">
             <img src="images/astro-logo.svg" alt="Astro Brewing Company" class="mobile-menu-logo">
-            <button class="mobile-close" onclick="closeMobileMenu()">&times;</button>
+            <button class="mobile-close" 
+                    onclick="closeMobileMenu()" 
+                    aria-label="Close mobile menu">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <ul class="mobile-nav-links">
-            <li><a href="index.html" onclick="closeMobileMenu()">Home</a></li>
-            <li><a href="index.html#beers" onclick="closeMobileMenu()">Beers</a></li>
-            <li><a href="index.html#about" onclick="closeMobileMenu()">About</a></li>
-            <li><a href="brewcraft.html" class="active" onclick="closeMobileMenu()">Brewcraft</a></li>
-            <li><a href="meet_brewery_page.html" onclick="closeMobileMenu()">Meet the Brewery</a></li>
-            <li><a href="index.html#contact" onclick="closeMobileMenu()">Contact</a></li>
+        <ul class="mobile-nav-links" role="menubar">
+            <li role="none"><a href="index.html" onclick="closeMobileMenu()" role="menuitem">Home</a></li>
+            <li role="none"><a href="index.html#beers" onclick="closeMobileMenu()" role="menuitem">Beers</a></li>
+            <li role="none"><a href="index.html#about" onclick="closeMobileMenu()" role="menuitem">About</a></li>
+            <li role="none"><a href="brewcraft.html" class="active" onclick="closeMobileMenu()" role="menuitem" aria-current="page">Brewcraft</a></li>
+            <li role="none"><a href="meet_brewery_page.html" onclick="closeMobileMenu()" role="menuitem">Meet the Brewery</a></li>
+            <li role="none"><a href="index.html#contact" onclick="closeMobileMenu()" role="menuitem">Contact</a></li>
         </ul>
-    </div>
+    </nav>
 
-    <main class="main-content">
-        <div class="page-header fade-in">
+    <main id="main" class="main-content">
+        <header class="page-header fade-in">
             <div class="page-subtitle">IoT Innovation Lab</div>
             <h1 class="page-title">Brewcraft Projects</h1>
             <p class="page-description">
                 Where brewing meets cutting-edge technology. Explore our custom IoT controllers and smart brewing devices 
                 that push the boundaries of traditional brewing through automation, machine learning, and precision control.
             </p>
-        </div>
+        </header>
 
-        <div class="projects-grid">
-            <div class="project-card fade-in">
-                <div class="project-image" style="background-image: url('images/hlthudUI.png'); background-size: cover; background-position: center;">
+        <section class="projects-grid" 
+                 role="region" 
+                 aria-labelledby="projects-title">
+            <h2 id="projects-title" class="sr-only">Project Portfolio</h2>
+            
+            <article class="project-card fade-in" 
+                     aria-labelledby="hlt-hud-title"
+                     aria-describedby="hlt-hud-description">
+                <div class="project-image" 
+                     style="background-image: url('images/hlthudUI.png'); background-size: cover; background-position: center;"
+                     role="img" 
+                     aria-label="HLT HUD interface showing temperature controls and monitoring display">
                 </div>
                 <div class="project-content">
-                    <h3 class="project-name">HLT HUD</h3>
+                    <h3 id="hlt-hud-title" class="project-name">HLT HUD</h3>
                     <div class="project-type">Hot Liquor Tank Automation Controller</div>
-                    <p class="project-description">
+                    <p id="hlt-hud-description" class="project-description">
                         A comprehensive hot liquor tank automation system featuring safety-critical design, delayed start 
                         functionality, and intelligent water management. Eliminates manual monitoring while maintaining 
                         the highest safety standards for heating element protection.
                     </p>
                     <div class="project-features">
                         <h4>Key Features:</h4>
-                        <ul>
+                        <ul role="list">
                             <li>Multi-layer safety system with redundant sensors</li>
                             <li>Delayed start automation (unlimited window)</li>
                             <li>Custom Nextion HMI interface</li>
@@ -616,40 +734,38 @@
                         </ul>
                     </div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                        <span class="project-status status-active">Active</span>
-                        <a href="hlt_hud_case_study.html" style="
-                            display: inline-block;
-                            padding: 10px 20px;
-                            background: linear-gradient(135deg, var(--primary), var(--accent));
-                            color: white;
-                            text-decoration: none;
-                            border-radius: 20px;
-                            font-size: 12px;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            letter-spacing: 1px;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(73, 190, 63, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                        <span class="project-status status-active" 
+                              role="status" 
+                              aria-label="Project status: Active">Active</span>
+                        <a href="hlt_hud_case_study.html" 
+                           class="case-study-link"
+                           aria-describedby="hlt-case-study-desc">
                             View Case Study →
+                            <span id="hlt-case-study-desc" class="sr-only">Learn more about the HLT HUD project development and implementation</span>
                         </a>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="project-card fade-in">
-                <div class="project-image" style="background-image: url('images/singletap.png'); background-size: cover; background-position: center;">
+            <article class="project-card fade-in" 
+                     aria-labelledby="singletap-title"
+                     aria-describedby="singletap-description">
+                <div class="project-image" 
+                     style="background-image: url('images/singletap.png'); background-size: cover; background-position: center;"
+                     role="img" 
+                     aria-label="SingleTap touchscreen interface for keezer control">
                 </div>
                 <div class="project-content">
-                    <h3 class="project-name">SingleTap</h3>
+                    <h3 id="singletap-title" class="project-name">SingleTap</h3>
                     <div class="project-type">Intelligent Keezer Control System</div>
-                    <p class="project-description">
+                    <p id="singletap-description" class="project-description">
                         One interface to rule them all. A touchscreen control system that manages keezer temperature 
                         using machine learning algorithms that analyze local weather, room temperature, and dual keezer 
                         probes for optimal cooling efficiency and serving temperatures.
                     </p>
                     <div class="project-features">
                         <h4>Key Features:</h4>
-                        <ul>
+                        <ul role="list">
                             <li>Machine learning temperature optimization</li>
                             <li>Weather-aware cooling adjustments</li>
                             <li>Dual temperature probe monitoring</li>
@@ -659,41 +775,36 @@
                         </ul>
                     </div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                        <span class="project-status status-development">In Development</span>
-                        <a href="singletap_case_study.html" style="
-                            display: inline-block;
-                            padding: 10px 20px;
-                            background: linear-gradient(135deg, var(--primary), var(--accent));
-                            color: white;
-                            text-decoration: none;
-                            border-radius: 20px;
-                            font-size: 12px;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            letter-spacing: 1px;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(73, 190, 63, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                        <span class="project-status status-development" 
+                              role="status" 
+                              aria-label="Project status: In Development">In Development</span>
+                        <a href="singletap_case_study.html" 
+                           class="case-study-link"
+                           aria-describedby="singletap-case-study-desc">
                             View Case Study →
+                            <span id="singletap-case-study-desc" class="sr-only">Learn more about the SingleTap project development and machine learning implementation</span>
                         </a>
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="project-card fade-in">
-                <div class="project-image">
+            <article class="project-card fade-in" 
+                     aria-labelledby="hopothermia-title"
+                     aria-describedby="hopothermia-description">
+                <div class="project-image" role="img" aria-label="Hop and flame emoji representing hop extract warming">
                     🌿🔥
                 </div>
                 <div class="project-content">
-                    <h3 class="project-name">Hopothermia</h3>
+                    <h3 id="hopothermia-title" class="project-name">Hopothermia</h3>
                     <div class="project-type">Hop Extract Warming Device</div>
-                    <p class="project-description">
+                    <p id="hopothermia-description" class="project-description">
                         Revolutionary hop dropping system that enables precise hop extract addition during fermentation 
                         without ever opening the fermenter. Maintains sterile conditions while delivering perfectly 
                         warmed hop extracts at optimal temperatures.
                     </p>
                     <div class="project-features">
                         <h4>Key Features:</h4>
-                        <ul>
+                        <ul role="list">
                             <li>Closed-system hop extract delivery</li>
                             <li>Precise temperature control for extracts</li>
                             <li>Maintains fermentation sterility</li>
@@ -702,34 +813,63 @@
                             <li>Contamination prevention protocols</li>
                         </ul>
                     </div>
-                    <span class="project-status status-development">In Development</span>
+                    <span class="project-status status-development" 
+                          role="status" 
+                          aria-label="Project status: In Development">In Development</span>
                 </div>
-            </div>
-        </div>
+            </article>
+        </section>
 
-        <div class="page-header fade-in">
+        <footer class="page-header fade-in">
             <p class="page-description">
                 Each project represents our commitment to innovation in brewing technology. By combining traditional 
                 brewing knowledge with modern IoT capabilities, we're creating tools that enhance precision, 
                 consistency, and efficiency in craft brewing operations.
             </p>
-        </div>
+        </footer>
     </main>
 
     <script>
+        // Track input method for focus styling
+        let isMouseUser = false;
+
+        document.addEventListener('mousedown', () => {
+            isMouseUser = true;
+            document.body.classList.add('mouse-user');
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                isMouseUser = false;
+                document.body.classList.remove('mouse-user');
+            }
+        });
+
         // Mobile Menu Functions
         function toggleMobileMenu() {
             const hamburger = document.querySelector('.hamburger');
             const mobileMenu = document.getElementById('mobileMenu');
             const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             
+            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+            
             hamburger.classList.toggle('active');
             mobileMenu.classList.toggle('active');
             mobileMenuOverlay.classList.toggle('active');
             
+            // Update ARIA attributes
+            hamburger.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.setAttribute('aria-hidden', isExpanded);
+            mobileMenuOverlay.setAttribute('aria-hidden', isExpanded);
+            
             // Prevent background scrolling when menu is open
             if (mobileMenu.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
+                // Focus the first menu item for accessibility
+                setTimeout(() => {
+                    const firstMenuItem = mobileMenu.querySelector('a');
+                    if (firstMenuItem) firstMenuItem.focus();
+                }, 100);
             } else {
                 document.body.style.overflow = '';
             }
@@ -743,13 +883,25 @@
             hamburger.classList.remove('active');
             mobileMenu.classList.remove('active');
             mobileMenuOverlay.classList.remove('active');
+            
+            // Update ARIA attributes
+            hamburger.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+            mobileMenuOverlay.setAttribute('aria-hidden', 'true');
+            
             document.body.style.overflow = '';
+            
+            // Return focus to hamburger button
+            hamburger.focus();
         }
 
         // Close mobile menu with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                closeMobileMenu();
+                const mobileMenu = document.getElementById('mobileMenu');
+                if (mobileMenu.classList.contains('active')) {
+                    closeMobileMenu();
+                }
             }
         });
 
@@ -781,6 +933,68 @@
                         behavior: 'smooth',
                         block: 'start'
                     });
+                    
+                    // Update focus for accessibility
+                    target.focus();
+                }
+            });
+        });
+
+        // Keyboard navigation for project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            // Make project cards focusable
+            card.setAttribute('tabindex', '0');
+            
+            card.addEventListener('keydown', function(e) {
+                // If Enter or Space is pressed on a card, focus the case study link if it exists
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const caseStudyLink = this.querySelector('.case-study-link');
+                    if (caseStudyLink) {
+                        caseStudyLink.click();
+                    }
+                }
+            });
+        });
+
+        // Focus management for mobile menu
+        document.getElementById('mobileMenu').addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                // Trap focus within mobile menu
+                const focusableElements = this.querySelectorAll('button, a, [tabindex="0"]');
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+                
+                if (e.shiftKey && document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                } else if (!e.shiftKey && document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        });
+
+        // Announce page navigation for screen readers
+        function announceNavigation(pageName) {
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.textContent = `Navigating to ${pageName}`;
+            document.body.appendChild(announcement);
+            
+            setTimeout(() => {
+                document.body.removeChild(announcement);
+            }, 1000);
+        }
+
+        // Add navigation announcements to links
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', function() {
+                const linkText = this.textContent.trim();
+                if (linkText && !this.getAttribute('href').startsWith('#')) {
+                    announceNavigation(linkText);
                 }
             });
         });
